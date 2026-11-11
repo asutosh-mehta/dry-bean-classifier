@@ -3,6 +3,22 @@ import joblib
 import pandas as pd
 import numpy as np
 
+
+st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    }
+    
+    [data-testid="stHeader"] {
+        background: rgba(0,0,0,0);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("Dry Bean Classification App")
 
 model = joblib.load("dry_bean_classifier.pkl")
