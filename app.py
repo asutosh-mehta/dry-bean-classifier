@@ -45,12 +45,21 @@ shape_factor4 = st.number_input("ShapeFactor4", min_value=0.0, max_value=1.0, st
 st.write("Please enter the values for the features above and click the 'Predict' button to classify the dry bean type.")    
 
 if st.button("Predict", key="predict_button"):
-    input_data = np.array([[area, perimeter, major_axis_length, minor_axis_length, aspect_ratio, eccentricity,
-                            convex_area, equivalent_diameter, extent, solidity, roundness,
-                            compactness, shape_factor1, shape_factor2, shape_factor3, shape_factor4]])
-    
+    input_data = pd.DataFrame(
+        [[area, perimeter, major_axis_length, minor_axis_length, aspect_ratio, eccentricity,
+          convex_area, equivalent_diameter, extent, solidity, roundness,
+          compactness, shape_factor1, shape_factor2, shape_factor3, shape_factor4]],
+        columns=scaler.feature_names_in_,
+    )
+
+    log_columns = [
+        "Area", "ConvexArea", "MinorAxisLength", "EquivDiameter",
+        "Perimeter", "MajorAxisLength", "Eccentricity", "Solidity", "ShapeFactor4",
+    ]
+    input_data[log_columns] = np.log1p(input_data[log_columns])
+
     input_data_scaled = scaler.transform(input_data)
     
     prediction = model.predict(input_data_scaled)
     
-    st.write(f"The predicted dry bean type is: {prediction[0]}")        
+    st.write(f"The predicted dry bean type is: {prediction[0]}")
